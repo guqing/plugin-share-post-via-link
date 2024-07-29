@@ -1,0 +1,50 @@
+package io.github.guqing.share.model;
+
+import lombok.Builder;
+import lombok.ToString;
+import lombok.Value;
+import run.halo.app.core.extension.User;
+import run.halo.app.extension.MetadataOperator;
+import run.halo.app.theme.finders.vo.ExtensionVoOperator;
+
+/**
+ * A value object for {@link User}.
+ *
+ * @author guqing
+ * @since 2.0.0
+ */
+@Value
+@ToString
+@Builder
+public class ContributorVo implements ExtensionVoOperator {
+
+    String name;
+
+    String displayName;
+
+    String avatar;
+
+    String bio;
+
+    String permalink;
+
+    MetadataOperator metadata;
+
+    /**
+     * Convert {@link User} to {@link ContributorVo}.
+     *
+     * @param user user extension
+     * @return contributor value object
+     */
+    public static ContributorVo from(User user) {
+        User.UserStatus status = user.getStatus();
+        String permalink = (status == null ? "" : status.getPermalink());
+        return builder().name(user.getMetadata().getName())
+            .displayName(user.getSpec().getDisplayName())
+            .avatar(user.getSpec().getAvatar())
+            .bio(user.getSpec().getBio())
+            .permalink(permalink)
+            .metadata(user.getMetadata())
+            .build();
+    }
+}

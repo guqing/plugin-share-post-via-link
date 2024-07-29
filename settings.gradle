@@ -1,7 +1,7 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
     }
 }
-rootProject.name = 'plugin-starter'
-
+rootProject.name = 'plugin-share-post-via-link'

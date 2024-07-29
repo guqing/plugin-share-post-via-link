@@ -32,5 +32,11 @@ export interface PostShareLinkStatus {
      * @memberof PostShareLinkStatus
      */
     'permalink'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostShareLinkStatus
+     */
+    'title'?: string;
 }
 

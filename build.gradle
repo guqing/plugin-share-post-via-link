@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id "com.github.node-gradle.node" version "7.0.2"
     id "io.freefair.lombok" version "8.0.1"
-    id "run.halo.plugin.devtools" version "0.0.10-SNAPSHOT"
+    id "run.halo.plugin.devtools" version "0.0.9"
 }
 
 group 'run.halo.starter'
@@ -44,12 +44,12 @@ tasks.register('installDepsForUI', PnpmTask) {
     args = ['install']
 }
 
-//build {
-//    // build frontend before build
-//    tasks.named('compileJava').configure {
-//        dependsOn('buildFrontend')
-//    }
-//}
+build {
+    // build frontend before build
+    tasks.named('compileJava').configure {
+        dependsOn('buildFrontend')
+    }
+}
 
 halo {
     version = '2.17'

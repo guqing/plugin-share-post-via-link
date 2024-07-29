@@ -48,6 +48,7 @@ public class PostShareLink extends AbstractExtension {
     @Schema(name = "PostShareLinkStatus")
     public static class Status {
         private String permalink;
+        private String title;
         private Long observedVersion;
     }
 }

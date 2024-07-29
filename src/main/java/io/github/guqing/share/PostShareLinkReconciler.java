@@ -5,6 +5,7 @@ import static run.halo.app.extension.index.query.QueryFactory.equal;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Component;
+import run.halo.app.core.extension.content.Post;
 import run.halo.app.extension.ExtensionClient;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.controller.Controller;
@@ -24,6 +25,10 @@ public class PostShareLinkReconciler implements Reconciler<Reconciler.Request> {
             .ifPresent(postShareLink -> {
                 postShareLink.getStatus()
                     .setPermalink(buildPermalink(postShareLink.getMetadata().getName()));
+                client.fetch(Post.class, postShareLink.getSpec().getPostName())
+                    .ifPresent(post -> postShareLink.getStatus()
+                        .setTitle(post.getSpec().getTitle())
+                    );
                 client.update(postShareLink);
             });
         return Result.doNotRetry();

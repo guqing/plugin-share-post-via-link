@@ -4,18 +4,14 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIR
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.Instant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.lang.NonNull;
 import run.halo.app.extension.AbstractExtension;
 import run.halo.app.extension.GVK;
-import run.halo.app.extension.Metadata;
 
-/**
- * Link expiration time is set by {@link Metadata#getDeletionTimestamp}, which is filled with the
- * time when the link is created.
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @GVK(group = "postshare.guqing.io", version = "v1alpha1", kind = "PostShareLink",
@@ -44,6 +40,8 @@ public class PostShareLink extends AbstractExtension {
     public static class Spec {
         @Schema(requiredMode = REQUIRED, minLength = 1)
         private String postName;
+
+        private Instant expirationAt;
 
         private String owner;
 

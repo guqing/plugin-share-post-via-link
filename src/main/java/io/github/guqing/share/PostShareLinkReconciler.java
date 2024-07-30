@@ -2,6 +2,8 @@ package io.github.guqing.share;
 
 import static run.halo.app.extension.index.query.QueryFactory.equal;
 
+import java.time.Duration;
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Component;
@@ -21,17 +23,25 @@ public class PostShareLinkReconciler implements Reconciler<Reconciler.Request> {
 
     @Override
     public Result reconcile(Request request) {
-        client.fetch(PostShareLink.class, request.name())
-            .ifPresent(postShareLink -> {
+        return client.fetch(PostShareLink.class, request.name())
+            .map(postShareLink -> {
                 postShareLink.getStatus()
                     .setPermalink(buildPermalink(postShareLink.getMetadata().getName()));
+
                 client.fetch(Post.class, postShareLink.getSpec().getPostName())
                     .ifPresent(post -> postShareLink.getStatus()
                         .setTitle(post.getSpec().getTitle())
                     );
+
                 client.update(postShareLink);
-            });
-        return Result.doNotRetry();
+
+                var expirationAt = postShareLink.getSpec().getExpirationAt();
+                if (expirationAt != null) {
+                    return new Result(true, Duration.between(Instant.now(), expirationAt));
+                }
+                return Result.doNotRetry();
+            })
+            .orElse(Result.doNotRetry());
     }
 
     private String buildPermalink(String shareName) {

@@ -5,7 +5,7 @@ import {
   type PostShareLink,
 } from "@/api/generated";
 import { toISOString } from "@/utils/date";
-import type { Post } from "@halo-dev/api-client";
+import { consoleApiClient, type Post } from "@halo-dev/api-client";
 import { VAlert, VButton, VModal, VSpace } from "@halo-dev/components";
 import { useLocalStorage } from "@vueuse/core";
 import { ref } from "vue";
@@ -38,6 +38,9 @@ async function onSubmit(data: PostShareLinkFormState) {
   isSubmitting.value = true;
 
   try {
+    const { data: currentUser } =
+      await consoleApiClient.user.getCurrentUserDetail();
+
     const { data: newPostShareLink } =
       await postShareApiClient.postShare.createPostShareLink({
         postShareLink: {
@@ -50,8 +53,7 @@ async function onSubmit(data: PostShareLinkFormState) {
           spec: {
             postName: props.post.metadata.name,
             expirationAt: toISOString(data.expirationAt),
-            // TODO: Replace with actual owner
-            owner: "admin",
+            owner: currentUser.user.metadata.name,
             shareType: data.shareType,
           },
         },

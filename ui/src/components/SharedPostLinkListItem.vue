@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { postShareApiClient } from "@/api";
 import type { PostShareLink } from "@/api/generated";
-import { formatDatetime } from "@/utils/date";
+import { formatDatetime, relativeTimeTo } from "@/utils/date";
 import {
   Dialog,
   IconExternalLinkLine,
@@ -75,6 +75,10 @@ function handleDelete() {
           <VStatusDot v-tooltip="`删除中`" state="warning" animate />
         </template>
       </VEntityField>
+      <VEntityField
+        v-if="postShareLink.spec.expirationAt"
+        :description="`${relativeTimeTo(postShareLink.spec.expirationAt)}失效`"
+      ></VEntityField>
       <VEntityField
         :description="formatDatetime(postShareLink.metadata.creationTimestamp)"
       ></VEntityField>

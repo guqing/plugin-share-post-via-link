@@ -1,5 +1,6 @@
 package io.github.guqing.share;
 
+import static io.github.guqing.share.PostShareLink.ShareType.PUBLISHED;
 import static run.halo.app.extension.index.IndexAttributeFactory.simpleAttribute;
 
 import io.github.guqing.share.model.PostVo;
@@ -52,6 +53,19 @@ public class SharePostViaLinkPlugin extends BasePlugin {
     @Override
     public void start() {
         schemeManager.register(PostShareLink.class, indexSpecs -> {
+            indexSpecs.add(new IndexSpec()
+                .setName("spec.postName")
+                .setIndexFunc(simpleAttribute(PostShareLink.class,
+                    link -> link.getSpec().getPostName())
+                )
+            );
+            indexSpecs.add(new IndexSpec()
+                .setName("spec.shareType")
+                .setIndexFunc(simpleAttribute(PostShareLink.class, link -> {
+                    var shareType = link.getSpec().getShareType();
+                    return shareType == null ? PUBLISHED.name() : shareType.name();
+                }))
+            );
             indexSpecs.add(new IndexSpec()
                 .setName(PostShareLink.SYNC_ON_STARTUP_INDEX)
                 .setIndexFunc(simpleAttribute(PostShareLink.class, link -> {

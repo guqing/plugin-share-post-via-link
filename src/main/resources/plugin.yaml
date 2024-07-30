@@ -2,6 +2,8 @@ apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   name: share-post-via-link
+  annotations:
+    store.halo.run/app-id: app-EiTni
 spec:
   enabled: true
   requires: ">=2.17.0"

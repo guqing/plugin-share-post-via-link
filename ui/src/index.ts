@@ -16,6 +16,7 @@ export default definePlugin({
         component: SharedPostLinkList,
         meta: {
           title: "文章分享链接",
+          permissions: ["plugin:share-post-via-link:manage"],
           menu: {
             name: "分享链接",
             icon: markRaw(RiShareForwardBoxLine),

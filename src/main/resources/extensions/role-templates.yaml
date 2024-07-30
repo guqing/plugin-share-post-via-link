@@ -1,0 +1,15 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: share-post-via-link
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Posts Management"
+    rbac.authorization.halo.run/display-name: "创建链接分享文章"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:share-post-via-link:manage"]
+rules:
+  - apiGroups: [ "postshare.guqing.io" ]
+    resources: [ "postsharelinks" ]
+    verbs: [ "*" ]

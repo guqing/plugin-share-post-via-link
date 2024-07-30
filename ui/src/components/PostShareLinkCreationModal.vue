@@ -7,8 +7,9 @@ import {
 import { toISOString } from "@/utils/date";
 import { consoleApiClient, type Post } from "@halo-dev/api-client";
 import { VAlert, VButton, VModal, VSpace } from "@halo-dev/components";
+import { useQuery } from "@tanstack/vue-query";
 import { useLocalStorage } from "@vueuse/core";
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import PostShareLinkViewResultModal from "./PostShareLinkViewResultModal.vue";
 
 interface PostShareLinkFormState {
@@ -22,6 +23,8 @@ const props = withDefaults(
   }>(),
   {},
 );
+
+const { post } = toRefs(props);
 
 const emit = defineEmits<{
   (event: "close"): void;
@@ -77,6 +80,16 @@ const showAlert = useLocalStorage(
   "plugin:share-post-via-link:show-creation-tips",
   true,
 );
+
+const { data: existLinks } = useQuery({
+  queryKey: ["plugin:share-post-via-link:exist-links", post],
+  queryFn: async () => {
+    const { data } = await postShareApiClient.postShare.listPostShareLink({
+      fieldSelector: [`spec.postName=${props.post.metadata.name}`],
+    });
+    return data;
+  },
+});
 </script>
 
 <template>
@@ -95,6 +108,31 @@ const showAlert = useLocalStorage(
         description="创建的分享链接不限制文章发布状态、可见性，访客只要得到此链接即可访问。"
         @close="showAlert = false"
       />
+    </div>
+    <div v-if="existLinks?.total" class="mb-5">
+      <VAlert type="default" title="当前文章已存在分享链接" :closable="false">
+        <template #description>
+          <ol class="list-inside list-decimal">
+            <li
+              v-for="existLink in existLinks?.items"
+              :key="existLink.metadata.name"
+            >
+              <a :href="existLink.status?.permalink" target="_blank">
+                {{ existLink.status?.permalink }}
+              </a>
+            </li>
+          </ol>
+        </template>
+        <template #actions>
+          <VButton
+            type="secondary"
+            size="sm"
+            @click="$router.push({ name: 'SharedPostLinks' })"
+          >
+            去管理
+          </VButton>
+        </template>
+      </VAlert>
     </div>
     <FormKit
       id="post-share-creation-form"

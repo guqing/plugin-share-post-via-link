@@ -6,14 +6,14 @@ spec:
   enabled: true
   requires: ">=2.17.0"
   author:
-    name: Halo
-    website: https://github.com/halo-dev
+    name: guqing & ruibaby
+    website: https://github.com/guqing/plugin-share-post-via-link
   logo: logo.svg
-  homepage: https://github.com/guqing/share-post-via-link
-  repo: https://github.com/guqing/share-post-via-link
-  issues: https://github.com/guqing/share-post-via-link/issues
+  homepage: https://www.halo.run/store/apps/app-EiTni
+  repo: https://github.com/guqing/plugin-share-post-via-link
+  issues: https://github.com/guqing/plugin-share-post-via-link/issues
   displayName: "链上好文"
-  description: "一键生成分享链接，轻松传播私密文章。"
+  description: "生成可分享的链接，让你的文章可以分享给团队成员或好友浏览。"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/plugin-starter/blob/main/LICENSE"
+      url: "https://github.com//guqing/plugin-share-post-via-link/blob/main/LICENSE"

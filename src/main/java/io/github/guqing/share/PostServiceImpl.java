@@ -98,10 +98,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Mono<PostVo> convertToVo(Post post, String snapshotName) {
-        final String baseSnapshotName = post.getSpec().getBaseSnapshot();
+        final String postName = post.getMetadata().getName();
         return convertToListedVo(post)
             .map(PostVo::from)
-            .flatMap(postVo -> getContent(snapshotName, baseSnapshotName)
+            .flatMap(postVo -> getContent(postName, snapshotName)
                 .doOnNext(postVo::setContent)
                 .thenReturn(postVo)
             );

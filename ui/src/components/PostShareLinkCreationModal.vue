@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-import { postShareApiClient } from "@/api";
-import {
-  PostShareLinkSpecShareTypeEnum,
-  type PostShareLink,
-} from "@/api/generated";
-import { toISOString } from "@/utils/date";
-import { consoleApiClient, type Post } from "@halo-dev/api-client";
-import { VAlert, VButton, VModal, VSpace } from "@halo-dev/components";
-import { useLocalStorage } from "@vueuse/core";
-import { ref } from "vue";
+import {postShareApiClient} from "@/api";
+import {type PostShareLink, PostShareLinkSpecShareTypeEnum,} from "@/api/generated";
+import {toISOString} from "@/utils/date";
+import {consoleApiClient, type Post} from "@halo-dev/api-client";
+import {VAlert, VButton, VModal, VSpace} from "@halo-dev/components";
+import {useLocalStorage} from "@vueuse/core";
+import {ref} from "vue";
 import PostShareLinkViewResultModal from "./PostShareLinkViewResultModal.vue";
 
 interface PostShareLinkFormState {
@@ -38,10 +35,10 @@ async function onSubmit(data: PostShareLinkFormState) {
   isSubmitting.value = true;
 
   try {
-    const { data: currentUser } =
+    const {data: currentUser} =
       await consoleApiClient.user.getCurrentUserDetail();
 
-    const { data: newPostShareLink } =
+    const {data: newPostShareLink} =
       await postShareApiClient.postShare.createPostShareLink({
         postShareLink: {
           kind: "PostShareLink",
@@ -49,10 +46,10 @@ async function onSubmit(data: PostShareLinkFormState) {
           metadata: {
             generateName: "shared-post-",
             name: "",
+            deletionTimestamp: data.expirationAt && toISOString(data.expirationAt)
           },
           spec: {
             postName: props.post.metadata.name,
-            expirationAt: toISOString(data.expirationAt),
             owner: currentUser.user.metadata.name,
             shareType: data.shareType,
           },
@@ -84,15 +81,15 @@ const showAlert = useLocalStorage(
     ref="modal"
     :centered="false"
     :width="600"
-    title="创建分享链接"
     mount-to-body
+    title="创建分享链接"
     @close="emit('close')"
   >
     <div v-if="showAlert" class="mb-5">
       <VAlert
-        type="info"
-        title="提示"
         description="创建的分享链接不限制文章发布状态、可见性，访客只要得到此链接即可访问。"
+        title="提示"
+        type="info"
         @close="showAlert = false"
       />
     </div>
@@ -114,19 +111,19 @@ const showAlert = useLocalStorage(
             value: PostShareLinkSpecShareTypeEnum.Latest,
           },
         ]"
+        :value="PostShareLinkSpecShareTypeEnum.Published"
         label="分享类型"
         name="shareType"
-        :value="PostShareLinkSpecShareTypeEnum.Published"
         type="radio"
       >
       </FormKit>
       <FormKit
-        name="expirationAt"
+        help="不设置代表永久有效，但可以手动删除"
         label="过期时间"
         max="9999-12-31T23:59"
         min="0000-01-01T00:00"
+        name="expirationAt"
         type="datetime-local"
-        help="不设置代表永久有效，但可以手动删除"
       ></FormKit>
     </FormKit>
 
@@ -140,7 +137,7 @@ const showAlert = useLocalStorage(
         >
           创建
         </VButton>
-        <VButton @click="modal?.close()"> 取消 </VButton>
+        <VButton @click="modal?.close()"> 取消</VButton>
       </VSpace>
     </template>
   </VModal>

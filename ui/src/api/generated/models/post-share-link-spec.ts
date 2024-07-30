@@ -25,19 +25,13 @@ export interface PostShareLinkSpec {
      * @type {string}
      * @memberof PostShareLinkSpec
      */
-    'expirationAt'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostShareLinkSpec
-     */
     'owner'?: string;
     /**
      * 
      * @type {string}
      * @memberof PostShareLinkSpec
      */
-    'postName'?: string;
+    'postName': string;
     /**
      * 
      * @type {string}

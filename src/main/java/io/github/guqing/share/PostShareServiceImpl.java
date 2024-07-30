@@ -18,14 +18,11 @@ public class PostShareServiceImpl implements PostShareService {
     @Override
     public Mono<PostVo> getByName(String name) {
         return client.get(PostShareLink.class, name)
-            .filter(postShare -> {
-                var expirationAt = postShare.getSpec().getExpirationAt();
-                return expirationAt == null || Instant.now().isBefore(expirationAt);
-            })
             .flatMap(postShare -> {
                 var postName = postShare.getSpec().getPostName();
                 var type = postShare.getSpec().getShareType();
                 return client.fetch(Post.class, postName)
+                    .switchIfEmpty(Mono.error(new NotFoundException("Post not found")))
                     .flatMap(post -> {
                         var snapshotName =
                             ShareType.LATEST.equals(type) ? post.getSpec().getReleaseSnapshot()

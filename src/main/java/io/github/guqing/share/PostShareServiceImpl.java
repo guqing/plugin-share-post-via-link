@@ -25,8 +25,8 @@ public class PostShareServiceImpl implements PostShareService {
                     .switchIfEmpty(Mono.error(new NotFoundException("Post not found")))
                     .flatMap(post -> {
                         var snapshotName =
-                            ShareType.LATEST.equals(type) ? post.getSpec().getReleaseSnapshot()
-                                : post.getSpec().getHeadSnapshot();
+                            ShareType.LATEST.equals(type) ? post.getSpec().getHeadSnapshot()
+                                : post.getSpec().getReleaseSnapshot();
                         return convertToPostVo(post, snapshotName);
                     });
             });

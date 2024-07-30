@@ -38,9 +38,13 @@ public class PostShareLink extends AbstractExtension {
     @Data
     @Schema(name = "PostShareLinkSpec")
     public static class Spec {
+        @Schema(requiredMode = REQUIRED, minLength = 1)
         private String postName;
+
         private Instant expirationAt;
+
         private String owner;
+
         private ShareType shareType;
     }
 

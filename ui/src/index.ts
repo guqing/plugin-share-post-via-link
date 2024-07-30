@@ -1,29 +1,40 @@
+import type { ListedPost } from "@halo-dev/api-client";
 import { definePlugin } from "@halo-dev/console-shared";
-import HomeView from "./views/HomeView.vue";
-import { IconPlug } from "@halo-dev/components";
-import { markRaw } from "vue";
+import { markRaw, type Ref } from "vue";
+import RiShareForwardBoxLine from "~icons/ri/share-forward-box-line";
+import PostShareLinkCreationDropdownItem from "./components/PostShareLinkCreationDropdownItem.vue";
+import SharedPostLinkList from "./views/SharedPostLinkList.vue";
 
 export default definePlugin({
   components: {},
   routes: [
     {
-      parentName: "Root",
+      parentName: "PostsRoot",
       route: {
-        path: "/example",
-        name: "Example",
-        component: HomeView,
+        path: "shared-links",
+        name: "SharedPostLinks",
+        component: SharedPostLinkList,
         meta: {
-          title: "示例页面",
-          searchable: true,
+          title: "文章分享链接",
           menu: {
-            name: "示例页面",
-            group: "示例分组",
-            icon: markRaw(IconPlug),
-            priority: 0,
+            name: "分享链接",
+            icon: markRaw(RiShareForwardBoxLine),
           },
         },
       },
     },
   ],
-  extensionPoints: {},
+  extensionPoints: {
+    "post:list-item:operation:create": (post: Ref<ListedPost>) => {
+      return [
+        {
+          priority: 20,
+          component: markRaw(PostShareLinkCreationDropdownItem),
+          props: {
+            post,
+          },
+        },
+      ];
+    },
+  },
 });

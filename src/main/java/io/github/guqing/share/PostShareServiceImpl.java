@@ -22,6 +22,7 @@ public class PostShareServiceImpl implements PostShareService {
                 var expirationAt = postShare.getSpec().getExpirationAt();
                 return expirationAt == null || Instant.now().isBefore(expirationAt);
             })
+            .switchIfEmpty(Mono.error(new NotFoundException("Post not found")))
             .flatMap(postShare -> {
                 var postName = postShare.getSpec().getPostName();
                 var type = postShare.getSpec().getShareType();

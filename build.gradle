@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id "com.github.node-gradle.node" version "7.0.2"
     id "io.freefair.lombok" version "8.0.1"
-    id "run.halo.plugin.devtools" version "0.0.9"
+    id "run.halo.plugin.devtools" version "0.1.0"
 }
 
 group 'io.github.guqing'
@@ -55,19 +55,19 @@ halo {
     version = '2.17'
 }
 
-//haloPlugin {
-//    openApi {
-//        groupingRules {
-//            postShareLinkExtensionV1alpha1Api {
-//                displayName = 'Extension API for Post Share Link'
-//                pathsToMatch = ['/apis/postshare.guqing.io/v1alpha1/**']
-//            }
-//        }
-//        groupedApiMappings = [
-//                '/v3/api-docs/postShareLinkExtensionV1alpha1Api': 'postShareLinkExtensionV1alpha1Api.json'
-//        ]
-//        generator {
-//            outputDir = file("${projectDir}/ui/src/api/generated")
-//        }
-//    }
-//}
+haloPlugin {
+    openApi {
+        groupingRules {
+            postShareLinkExtensionV1alpha1Api {
+                displayName = 'Extension API for Post Share Link'
+                pathsToMatch = ['/apis/postshare.guqing.io/v1alpha1/**']
+            }
+        }
+        groupedApiMappings = [
+                '/v3/api-docs/postShareLinkExtensionV1alpha1Api': 'postShareLinkExtensionV1alpha1Api.json'
+        ]
+        generator {
+            outputDir = file("${projectDir}/ui/src/api/generated")
+        }
+    }
+}

@@ -15,13 +15,13 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { Metadata } from './metadata';
+import type { Metadata } from './metadata';
 // May contain unused imports in some cases
 // @ts-ignore
-import { PostShareLinkSpec } from './post-share-link-spec';
+import type { PostShareLinkSpec } from './post-share-link-spec';
 // May contain unused imports in some cases
 // @ts-ignore
-import { PostShareLinkStatus } from './post-share-link-status';
+import type { PostShareLinkStatus } from './post-share-link-status';
 
 /**
  * 

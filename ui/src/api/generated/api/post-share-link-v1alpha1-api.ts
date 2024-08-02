@@ -14,19 +14,19 @@
 
 
 import type { Configuration } from '../configuration';
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from '../common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
+import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
-import { JsonPatchInner } from '../models';
+import type { JsonPatchInner } from '../models';
 // @ts-ignore
-import { PostShareLink } from '../models';
+import type { PostShareLink } from '../models';
 // @ts-ignore
-import { PostShareLinkList } from '../models';
+import type { PostShareLinkList } from '../models';
 /**
  * PostShareLinkV1alpha1Api - axios parameter creator
  * @export
@@ -39,7 +39,7 @@ export const PostShareLinkV1alpha1ApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPostShareLink: async (postShareLink?: PostShareLink, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createPostShareLink: async (postShareLink?: PostShareLink, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/apis/postshare.guqing.io/v1alpha1/postsharelinks`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -80,7 +80,7 @@ export const PostShareLinkV1alpha1ApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePostShareLink: async (name: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deletePostShareLink: async (name: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             assertParamExists('deletePostShareLink', 'name', name)
             const localVarPath = `/apis/postshare.guqing.io/v1alpha1/postsharelinks/{name}`
@@ -121,7 +121,7 @@ export const PostShareLinkV1alpha1ApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostShareLink: async (name: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPostShareLink: async (name: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             assertParamExists('getPostShareLink', 'name', name)
             const localVarPath = `/apis/postshare.guqing.io/v1alpha1/postsharelinks/{name}`
@@ -166,7 +166,7 @@ export const PostShareLinkV1alpha1ApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listPostShareLink: async (page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listPostShareLink: async (page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/apis/postshare.guqing.io/v1alpha1/postsharelinks`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -225,7 +225,7 @@ export const PostShareLinkV1alpha1ApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        patchPostShareLink: async (name: string, jsonPatchInner?: Array<JsonPatchInner>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        patchPostShareLink: async (name: string, jsonPatchInner?: Array<JsonPatchInner>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             assertParamExists('patchPostShareLink', 'name', name)
             const localVarPath = `/apis/postshare.guqing.io/v1alpha1/postsharelinks/{name}`
@@ -270,7 +270,7 @@ export const PostShareLinkV1alpha1ApiAxiosParamCreator = function (configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePostShareLink: async (name: string, postShareLink?: PostShareLink, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePostShareLink: async (name: string, postShareLink?: PostShareLink, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'name' is not null or undefined
             assertParamExists('updatePostShareLink', 'name', name)
             const localVarPath = `/apis/postshare.guqing.io/v1alpha1/postsharelinks/{name}`
@@ -324,9 +324,11 @@ export const PostShareLinkV1alpha1ApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createPostShareLink(postShareLink?: PostShareLink, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
+        async createPostShareLink(postShareLink?: PostShareLink, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createPostShareLink(postShareLink, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostShareLinkV1alpha1Api.createPostShareLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Delete PostShareLink
@@ -334,9 +336,11 @@ export const PostShareLinkV1alpha1ApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePostShareLink(name: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deletePostShareLink(name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deletePostShareLink(name, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostShareLinkV1alpha1Api.deletePostShareLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Get PostShareLink
@@ -344,9 +348,11 @@ export const PostShareLinkV1alpha1ApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPostShareLink(name: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
+        async getPostShareLink(name: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPostShareLink(name, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostShareLinkV1alpha1Api.getPostShareLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * List PostShareLink
@@ -358,9 +364,11 @@ export const PostShareLinkV1alpha1ApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listPostShareLink(page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLinkList>> {
+        async listPostShareLink(page?: number, size?: number, labelSelector?: Array<string>, fieldSelector?: Array<string>, sort?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLinkList>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.listPostShareLink(page, size, labelSelector, fieldSelector, sort, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostShareLinkV1alpha1Api.listPostShareLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Patch PostShareLink
@@ -369,9 +377,11 @@ export const PostShareLinkV1alpha1ApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async patchPostShareLink(name: string, jsonPatchInner?: Array<JsonPatchInner>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
+        async patchPostShareLink(name: string, jsonPatchInner?: Array<JsonPatchInner>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.patchPostShareLink(name, jsonPatchInner, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostShareLinkV1alpha1Api.patchPostShareLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Update PostShareLink
@@ -380,9 +390,11 @@ export const PostShareLinkV1alpha1ApiFp = function(configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePostShareLink(name: string, postShareLink?: PostShareLink, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
+        async updatePostShareLink(name: string, postShareLink?: PostShareLink, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostShareLink>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updatePostShareLink(name, postShareLink, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostShareLinkV1alpha1Api.updatePostShareLink']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -400,7 +412,7 @@ export const PostShareLinkV1alpha1ApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPostShareLink(requestParameters: PostShareLinkV1alpha1ApiCreatePostShareLinkRequest = {}, options?: AxiosRequestConfig): AxiosPromise<PostShareLink> {
+        createPostShareLink(requestParameters: PostShareLinkV1alpha1ApiCreatePostShareLinkRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PostShareLink> {
             return localVarFp.createPostShareLink(requestParameters.postShareLink, options).then((request) => request(axios, basePath));
         },
         /**
@@ -409,7 +421,7 @@ export const PostShareLinkV1alpha1ApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePostShareLink(requestParameters: PostShareLinkV1alpha1ApiDeletePostShareLinkRequest, options?: AxiosRequestConfig): AxiosPromise<void> {
+        deletePostShareLink(requestParameters: PostShareLinkV1alpha1ApiDeletePostShareLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.deletePostShareLink(requestParameters.name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -418,7 +430,7 @@ export const PostShareLinkV1alpha1ApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostShareLink(requestParameters: PostShareLinkV1alpha1ApiGetPostShareLinkRequest, options?: AxiosRequestConfig): AxiosPromise<PostShareLink> {
+        getPostShareLink(requestParameters: PostShareLinkV1alpha1ApiGetPostShareLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostShareLink> {
             return localVarFp.getPostShareLink(requestParameters.name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -427,7 +439,7 @@ export const PostShareLinkV1alpha1ApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listPostShareLink(requestParameters: PostShareLinkV1alpha1ApiListPostShareLinkRequest = {}, options?: AxiosRequestConfig): AxiosPromise<PostShareLinkList> {
+        listPostShareLink(requestParameters: PostShareLinkV1alpha1ApiListPostShareLinkRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<PostShareLinkList> {
             return localVarFp.listPostShareLink(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, options).then((request) => request(axios, basePath));
         },
         /**
@@ -436,7 +448,7 @@ export const PostShareLinkV1alpha1ApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        patchPostShareLink(requestParameters: PostShareLinkV1alpha1ApiPatchPostShareLinkRequest, options?: AxiosRequestConfig): AxiosPromise<PostShareLink> {
+        patchPostShareLink(requestParameters: PostShareLinkV1alpha1ApiPatchPostShareLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostShareLink> {
             return localVarFp.patchPostShareLink(requestParameters.name, requestParameters.jsonPatchInner, options).then((request) => request(axios, basePath));
         },
         /**
@@ -445,7 +457,7 @@ export const PostShareLinkV1alpha1ApiFactory = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePostShareLink(requestParameters: PostShareLinkV1alpha1ApiUpdatePostShareLinkRequest, options?: AxiosRequestConfig): AxiosPromise<PostShareLink> {
+        updatePostShareLink(requestParameters: PostShareLinkV1alpha1ApiUpdatePostShareLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostShareLink> {
             return localVarFp.updatePostShareLink(requestParameters.name, requestParameters.postShareLink, options).then((request) => request(axios, basePath));
         },
     };
@@ -591,7 +603,7 @@ export class PostShareLinkV1alpha1Api extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PostShareLinkV1alpha1Api
      */
-    public createPostShareLink(requestParameters: PostShareLinkV1alpha1ApiCreatePostShareLinkRequest = {}, options?: AxiosRequestConfig) {
+    public createPostShareLink(requestParameters: PostShareLinkV1alpha1ApiCreatePostShareLinkRequest = {}, options?: RawAxiosRequestConfig) {
         return PostShareLinkV1alpha1ApiFp(this.configuration).createPostShareLink(requestParameters.postShareLink, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -602,7 +614,7 @@ export class PostShareLinkV1alpha1Api extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PostShareLinkV1alpha1Api
      */
-    public deletePostShareLink(requestParameters: PostShareLinkV1alpha1ApiDeletePostShareLinkRequest, options?: AxiosRequestConfig) {
+    public deletePostShareLink(requestParameters: PostShareLinkV1alpha1ApiDeletePostShareLinkRequest, options?: RawAxiosRequestConfig) {
         return PostShareLinkV1alpha1ApiFp(this.configuration).deletePostShareLink(requestParameters.name, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -613,7 +625,7 @@ export class PostShareLinkV1alpha1Api extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PostShareLinkV1alpha1Api
      */
-    public getPostShareLink(requestParameters: PostShareLinkV1alpha1ApiGetPostShareLinkRequest, options?: AxiosRequestConfig) {
+    public getPostShareLink(requestParameters: PostShareLinkV1alpha1ApiGetPostShareLinkRequest, options?: RawAxiosRequestConfig) {
         return PostShareLinkV1alpha1ApiFp(this.configuration).getPostShareLink(requestParameters.name, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -624,7 +636,7 @@ export class PostShareLinkV1alpha1Api extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PostShareLinkV1alpha1Api
      */
-    public listPostShareLink(requestParameters: PostShareLinkV1alpha1ApiListPostShareLinkRequest = {}, options?: AxiosRequestConfig) {
+    public listPostShareLink(requestParameters: PostShareLinkV1alpha1ApiListPostShareLinkRequest = {}, options?: RawAxiosRequestConfig) {
         return PostShareLinkV1alpha1ApiFp(this.configuration).listPostShareLink(requestParameters.page, requestParameters.size, requestParameters.labelSelector, requestParameters.fieldSelector, requestParameters.sort, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -635,7 +647,7 @@ export class PostShareLinkV1alpha1Api extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PostShareLinkV1alpha1Api
      */
-    public patchPostShareLink(requestParameters: PostShareLinkV1alpha1ApiPatchPostShareLinkRequest, options?: AxiosRequestConfig) {
+    public patchPostShareLink(requestParameters: PostShareLinkV1alpha1ApiPatchPostShareLinkRequest, options?: RawAxiosRequestConfig) {
         return PostShareLinkV1alpha1ApiFp(this.configuration).patchPostShareLink(requestParameters.name, requestParameters.jsonPatchInner, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -646,7 +658,8 @@ export class PostShareLinkV1alpha1Api extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PostShareLinkV1alpha1Api
      */
-    public updatePostShareLink(requestParameters: PostShareLinkV1alpha1ApiUpdatePostShareLinkRequest, options?: AxiosRequestConfig) {
+    public updatePostShareLink(requestParameters: PostShareLinkV1alpha1ApiUpdatePostShareLinkRequest, options?: RawAxiosRequestConfig) {
         return PostShareLinkV1alpha1ApiFp(this.configuration).updatePostShareLink(requestParameters.name, requestParameters.postShareLink, options).then((request) => request(this.axios, this.basePath));
     }
 }
+

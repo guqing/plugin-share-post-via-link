@@ -15,7 +15,7 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { PostShareLink } from './post-share-link';
+import type { PostShareLink } from './post-share-link';
 
 /**
  * 

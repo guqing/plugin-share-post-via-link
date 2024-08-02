@@ -37,7 +37,7 @@ export interface PostShareLinkSpec {
      * @type {string}
      * @memberof PostShareLinkSpec
      */
-    'postName'?: string;
+    'postName': string;
     /**
      * 
      * @type {string}

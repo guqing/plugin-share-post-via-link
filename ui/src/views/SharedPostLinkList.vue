@@ -26,9 +26,8 @@ const { data, isLoading, refetch, isFetching } = useQuery({
     return data;
   },
   refetchInterval(data) {
-    const hasDeletingData = data?.items.some(
-      (item) => !item.metadata.deletionTimestamp,
-    );
+    const hasDeletingData = data?.items
+      .some((item) => item.metadata.deletionTimestamp);
     return hasDeletingData ? 1000 : false;
   },
 });

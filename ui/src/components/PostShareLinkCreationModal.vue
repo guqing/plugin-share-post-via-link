@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/vue-query";
 import { useLocalStorage } from "@vueuse/core";
 import { ref, toRefs } from "vue";
 import PostShareLinkViewResultModal from "./PostShareLinkViewResultModal.vue";
+import { v4 as uuidv4 } from "uuid";
 
 interface PostShareLinkFormState {
   expirationAt: string;
@@ -50,8 +51,7 @@ async function onSubmit(data: PostShareLinkFormState) {
           kind: "PostShareLink",
           apiVersion: "postshare.guqing.io/v1alpha1",
           metadata: {
-            generateName: "shared-post-",
-            name: "",
+            name: uuidv4().replace(/-/g, ""),
           },
           spec: {
             postName: props.post.metadata.name,

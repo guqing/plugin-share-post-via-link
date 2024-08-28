@@ -36,12 +36,20 @@ public class PostShareLinkReconciler implements Reconciler<Reconciler.Request> {
                 client.update(postShareLink);
 
                 var expirationAt = postShareLink.getSpec().getExpirationAt();
-                if (expirationAt != null) {
+                if (expirationAt != null && !isExpired(postShareLink)) {
                     return new Result(true, Duration.between(Instant.now(), expirationAt));
                 }
                 return Result.doNotRetry();
             })
             .orElse(Result.doNotRetry());
+    }
+
+    boolean isExpired(PostShareLink postShareLink) {
+        var expirationAt = postShareLink.getSpec().getExpirationAt();
+        if (expirationAt == null) {
+            return false;
+        }
+        return Instant.now().isAfter(expirationAt);
     }
 
     private String buildPermalink(String shareName) {
@@ -54,6 +62,7 @@ public class PostShareLinkReconciler implements Reconciler<Reconciler.Request> {
             .extension(new PostShareLink())
             .syncAllListOptions(ListOptions.builder()
                 .fieldQuery(equal(PostShareLink.SYNC_ON_STARTUP_INDEX, BooleanUtils.TRUE))
+                .andQuery(equal("status.expired", BooleanUtils.FALSE))
                 .build()
             )
             .build();

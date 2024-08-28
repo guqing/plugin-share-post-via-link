@@ -8,6 +8,7 @@ import java.time.Instant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.springframework.lang.NonNull;
 import run.halo.app.extension.AbstractExtension;
 import run.halo.app.extension.GVK;
@@ -36,6 +37,7 @@ public class PostShareLink extends AbstractExtension {
     }
 
     @Data
+    @Accessors(chain = true)
     @Schema(name = "PostShareLinkSpec")
     public static class Spec {
         @Schema(requiredMode = REQUIRED, minLength = 1)

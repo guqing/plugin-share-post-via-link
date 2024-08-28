@@ -4,6 +4,7 @@ import static io.github.guqing.share.PostShareLink.ShareType.PUBLISHED;
 import static run.halo.app.extension.index.IndexAttributeFactory.simpleAttribute;
 
 import io.github.guqing.share.model.PostVo;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.BooleanUtils;
@@ -64,6 +65,14 @@ public class SharePostViaLinkPlugin extends BasePlugin {
                 .setIndexFunc(simpleAttribute(PostShareLink.class, link -> {
                     var shareType = link.getSpec().getShareType();
                     return shareType == null ? PUBLISHED.name() : shareType.name();
+                }))
+            );
+            indexSpecs.add(new IndexSpec()
+                .setName("status.expired")
+                .setIndexFunc(simpleAttribute(PostShareLink.class, link -> {
+                    var expirationAt = link.getSpec().getExpirationAt();
+                    return expirationAt == null ? BooleanUtils.FALSE
+                        : String.valueOf(Instant.now().isAfter(expirationAt));
                 }))
             );
             indexSpecs.add(new IndexSpec()

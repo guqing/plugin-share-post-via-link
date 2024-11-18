@@ -9,6 +9,7 @@ import io.github.guqing.share.model.StatsVo;
 import io.github.guqing.share.model.TagVo;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.reactivestreams.Publisher;
@@ -18,6 +19,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import run.halo.app.content.ContentWrapper;
 import run.halo.app.content.PostContentService;
 import run.halo.app.core.extension.Counter;
 import run.halo.app.core.extension.User;
@@ -26,6 +28,8 @@ import run.halo.app.core.extension.content.Post;
 import run.halo.app.core.extension.content.Tag;
 import run.halo.app.extension.GVK;
 import run.halo.app.extension.ReactiveExtensionClient;
+import run.halo.app.plugin.extensionpoint.ExtensionGetter;
+import run.halo.app.theme.ReactivePostContentHandler;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +39,8 @@ public class PostServiceImpl implements PostService {
     private final ReactiveExtensionClient client;
 
     private final PostContentService postContentService;
+
+    private final ExtensionGetter extensionGetter;
 
     static String meterNameOf(String group, String plural, String name) {
         if (StringUtils.isBlank(group)) {
@@ -110,11 +116,31 @@ public class PostServiceImpl implements PostService {
     Mono<ContentVo> getContent(String postName, String snapshotName) {
         return client.get(Post.class, postName)
             .flatMap(post -> postContentService.getSpecifiedContent(post.getMetadata().getName(),
-                snapshotName))
+                    snapshotName)
+                .flatMap(wrapper -> extendPostContent(post, wrapper))
+            );
+    }
+
+    protected Mono<ContentVo> extendPostContent(Post post,
+        ContentWrapper wrapper) {
+        Assert.notNull(post, "Post name must not be null");
+        Assert.notNull(wrapper, "Post content must not be null");
+        return extensionGetter.getEnabledExtensions(ReactivePostContentHandler.class)
+            .reduce(Mono.fromSupplier(() -> ReactivePostContentHandler.PostContentContext.builder()
+                    .post(post)
+                    .content(wrapper.getContent())
+                    .raw(wrapper.getRaw())
+                    .rawType(wrapper.getRawType())
+                    .build()
+                ),
+                (contentMono, handler) -> contentMono.flatMap(handler::handle)
+            )
+            .flatMap(Function.identity())
             .map(postContent -> ContentVo.builder()
                 .content(postContent.getContent())
                 .raw(postContent.getRaw())
-                .build());
+                .build()
+            );
     }
 
     private <T extends ListedPostVo> Mono<StatsVo> populateStats(T postVo) {

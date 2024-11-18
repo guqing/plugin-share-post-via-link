@@ -17,7 +17,7 @@ public class PostShareServiceImpl implements PostShareService {
 
     @Override
     public Mono<PostVo> getByName(String name) {
-        return client.get(PostShareLink.class, name)
+        return client.fetch(PostShareLink.class, name)
             .filter(postShare -> {
                 var expirationAt = postShare.getSpec().getExpirationAt();
                 return expirationAt == null || Instant.now().isBefore(expirationAt);

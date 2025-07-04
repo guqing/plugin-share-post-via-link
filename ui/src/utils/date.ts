@@ -1,38 +1,32 @@
-import dayjs from "dayjs";
-import "dayjs/locale/zh-cn";
-import relativeTime from "dayjs/plugin/relativeTime";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-dayjs.extend(timezone);
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(timezone)
+dayjs.extend(utc)
+dayjs.extend(relativeTime)
 
-export function formatDatetime(
-  date: string | Date | undefined | null,
-  tz?: string,
-): string {
+export function formatDatetime(date: string | Date | undefined | null, tz?: string): string {
   if (!date) {
-    return "";
+    return ''
   }
-  return dayjs(date).tz(tz).format("YYYY-MM-DD HH:mm");
+  return dayjs(date).tz(tz).format('YYYY-MM-DD HH:mm')
 }
 
 export function toISOString(date: string | Date | undefined | null): string {
   if (!date) {
-    return "";
+    return ''
   }
-  return dayjs(date).utc(false).toISOString();
+  return dayjs(date).utc(false).toISOString()
 }
 
-export function toDatetimeLocal(
-  date: string | Date | undefined | null,
-  tz?: string,
-): string {
+export function toDatetimeLocal(date: string | Date | undefined | null, tz?: string): string {
   if (!date) {
-    return "";
+    return ''
   }
   // see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local#the_y10k_problem_often_client-side
-  return dayjs(date).tz(tz).format("YYYY-MM-DDTHH:mm");
+  return dayjs(date).tz(tz).format('YYYY-MM-DDTHH:mm')
 }
 
 /**
@@ -47,11 +41,11 @@ export function toDatetimeLocal(
  * RelativeTimeTo("2021-01-01") // in 1 month
  */
 export function relativeTimeTo(date: string | Date | undefined | null) {
-  dayjs.locale("zh-cn");
+  dayjs.locale('zh-cn')
 
   if (!date) {
-    return;
+    return
   }
 
-  return dayjs().to(dayjs(date));
+  return dayjs().to(dayjs(date))
 }

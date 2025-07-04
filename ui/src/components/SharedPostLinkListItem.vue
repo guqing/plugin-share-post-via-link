@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { postShareApiClient } from "@/api";
-import type { PostShareLink } from "@/api/generated";
-import { formatDatetime, relativeTimeTo } from "@/utils/date";
+import { postShareApiClient } from '@/api'
+import type { PostShareLink } from '@/api/generated'
+import { formatDatetime, relativeTimeTo } from '@/utils/date'
 import {
   Dialog,
   IconExternalLinkLine,
@@ -10,44 +10,44 @@ import {
   VDropdownItem,
   VEntity,
   VEntityField,
-  VStatusDot,
-} from "@halo-dev/components";
-import { useQueryClient } from "@tanstack/vue-query";
-import { useClipboard } from "@vueuse/core";
+  VStatusDot
+} from '@halo-dev/components'
+import { useQueryClient } from '@tanstack/vue-query'
+import { useClipboard } from '@vueuse/core'
 
-const queryClient = useQueryClient();
+const queryClient = useQueryClient()
 
 const props = withDefaults(
   defineProps<{
-    postShareLink: PostShareLink;
+    postShareLink: PostShareLink
   }>(),
-  {},
-);
+  {}
+)
 
-const { copy } = useClipboard({ legacy: true });
+const { copy } = useClipboard({ legacy: true })
 
 function handleCopy() {
-  copy(props.postShareLink.status?.permalink || "");
-  Toast.success("复制成功");
+  copy(props.postShareLink.status?.permalink || '')
+  Toast.success('复制成功')
 }
 
 function handleDelete() {
   Dialog.warning({
-    title: "删除分享链接",
-    description: "确定要删除该分享链接吗？",
-    confirmType: "danger",
+    title: '删除分享链接',
+    description: '确定要删除该分享链接吗？',
+    confirmType: 'danger',
     async onConfirm() {
       await postShareApiClient.postShare.deletePostShareLink({
-        name: props.postShareLink.metadata.name,
-      });
+        name: props.postShareLink.metadata.name
+      })
 
-      Toast.success("删除成功");
+      Toast.success('删除成功')
 
       queryClient.invalidateQueries({
-        queryKey: ["plugin:share-post-via-link:list"],
-      });
-    },
-  });
+        queryKey: ['plugin:share-post-via-link:list']
+      })
+    }
+  })
 }
 </script>
 
@@ -62,9 +62,9 @@ function handleDelete() {
           <a
             target="_blank"
             :href="postShareLink.status?.permalink"
-            class="hidden text-gray-600 transition-all hover:text-gray-900 group-hover:inline-block"
+            class=":uno: hidden text-gray-600 transition-all group-hover:inline-block hover:text-gray-900"
           >
-            <IconExternalLinkLine class="size-3.5" />
+            <IconExternalLinkLine class=":uno: size-3.5" />
           </a>
         </template>
       </VEntityField>

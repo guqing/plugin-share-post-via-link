@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { postShareApiClient } from '@/api'
 import { PostShareLinkSpecShareTypeEnum, type PostShareLink } from '@/api/generated'
-import { toISOString } from '@/utils/date'
-import { consoleApiClient, type Post } from '@halo-dev/api-client'
+import { ucApiClient, type Post } from '@halo-dev/api-client'
 import { VAlert, VButton, VModal, VSpace } from '@halo-dev/components'
+import { utils } from '@halo-dev/ui-shared'
 import { useQuery } from '@tanstack/vue-query'
 import { useLocalStorage } from '@vueuse/core'
-import { v4 as uuidv4 } from 'uuid'
 import { ref, toRefs } from 'vue'
 import PostShareLinkViewResultModal from './PostShareLinkViewResultModal.vue'
 
@@ -39,21 +38,22 @@ async function onSubmit(data: PostShareLinkFormState) {
   isSubmitting.value = true
 
   try {
-    const { data: currentUser } = await consoleApiClient.user.getCurrentUserDetail()
+    const { data: currentUser } = await ucApiClient.user.currentUser.getMyUserDetail()
 
     const { data: newPostShareLink } = await postShareApiClient.postShare.createPostShareLink({
       postShareLink: {
         kind: 'PostShareLink',
         apiVersion: 'postshare.guqing.io/v1alpha1',
         metadata: {
-          name: uuidv4().replace(/-/g, '')
+          name: utils.id.uuid().replace(/-/g, '')
         },
         spec: {
           postName: props.post.metadata.name,
-          expirationAt: toISOString(data.expirationAt),
+          expirationAt: utils.date.toISOString(data.expirationAt),
           owner: currentUser.user.metadata.name,
           shareType: data.shareType
-        }
+        },
+        status: {}
       }
     })
 

@@ -35,7 +35,8 @@ export default definePlugin({
           }),
           props: {
             post
-          }
+          },
+          permissions: ['plugin:share-post-via-link:manage']
         }
       ]
     }

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { postShareApiClient } from '@/api'
 import type { PostShareLink } from '@/api/generated'
-import { formatDatetime, relativeTimeTo } from '@/utils/date'
 import {
   Dialog,
   IconExternalLinkLine,
@@ -12,6 +11,7 @@ import {
   VEntityField,
   VStatusDot
 } from '@halo-dev/components'
+import { utils } from '@halo-dev/ui-shared'
 import { useQueryClient } from '@tanstack/vue-query'
 import { useClipboard } from '@vueuse/core'
 
@@ -77,10 +77,10 @@ function handleDelete() {
       </VEntityField>
       <VEntityField
         v-if="postShareLink.spec.expirationAt"
-        :description="`${relativeTimeTo(postShareLink.spec.expirationAt)}失效`"
+        :description="`${utils.date.timeAgo(postShareLink.spec.expirationAt)}失效`"
       ></VEntityField>
       <VEntityField
-        :description="formatDatetime(postShareLink.metadata.creationTimestamp)"
+        :description="utils.date.format(postShareLink.metadata.creationTimestamp)"
       ></VEntityField>
     </template>
     <template #dropdownItems>

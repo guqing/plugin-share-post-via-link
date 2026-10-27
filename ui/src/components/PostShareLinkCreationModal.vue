@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { postShareApiClient } from '@/api'
 import { PostShareLinkSpecShareTypeEnum, type PostShareLink } from '@/api/generated'
-import { toISOString } from '@/utils/date'
 import { ucApiClient, type Post } from '@halo-dev/api-client'
 import { VAlert, VButton, VModal, VSpace } from '@halo-dev/components'
+import { utils } from '@halo-dev/ui-shared'
 import { useQuery } from '@tanstack/vue-query'
 import { useLocalStorage } from '@vueuse/core'
 import { ref, toRefs } from 'vue'
 import PostShareLinkViewResultModal from './PostShareLinkViewResultModal.vue'
-import { utils } from '@halo-dev/ui-shared'
 
 interface PostShareLinkFormState {
   expirationAt: string
@@ -50,7 +49,7 @@ async function onSubmit(data: PostShareLinkFormState) {
         },
         spec: {
           postName: props.post.metadata.name,
-          expirationAt: toISOString(data.expirationAt),
+          expirationAt: utils.date.toISOString(data.expirationAt),
           owner: currentUser.user.metadata.name,
           shareType: data.shareType
         },

@@ -41,7 +41,7 @@ const { data, isLoading, refetch, isFetching } = useQuery({
   </VPageHeader>
 
   <div class=":uno: m-0 md:m-4">
-    <VCard :body-class="[':uno: !p-0']">
+    <VCard :body-class="['!p-0']">
       <VLoading v-if="isLoading" />
       <Transition v-else-if="!data?.items?.length" appear name="fade">
         <VEmpty

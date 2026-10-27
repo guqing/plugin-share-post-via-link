@@ -1,7 +1,6 @@
 import type { ListedPost } from '@halo-dev/api-client'
-import { VDropdownItem, VLoading } from '@halo-dev/components'
-import { definePlugin } from '@halo-dev/console-shared'
-import 'uno.css'
+import { VDropdownItem } from '@halo-dev/components'
+import { definePlugin } from '@halo-dev/ui-shared'
 import { defineAsyncComponent, h, markRaw, type Ref } from 'vue'
 import RiShareForwardBoxLine from '~icons/ri/share-forward-box-line'
 
@@ -13,10 +12,7 @@ export default definePlugin({
       route: {
         path: 'shared-links',
         name: 'SharedPostLinks',
-        component: defineAsyncComponent({
-          loader: () => import('./views/SharedPostLinkList.vue'),
-          loadingComponent: VLoading
-        }),
+        component: () => import('./views/SharedPostLinkList.vue'),
         meta: {
           title: '文章分享链接',
           permissions: ['plugin:share-post-via-link:manage'],
